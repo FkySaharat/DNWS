@@ -167,12 +167,32 @@ namespace DNWS
             user.Password = password;
             using (var context = new TweetContext())
             {
+          
                 List<User> userlist = context.Users.Where(b => b.Name.Equals(name)).ToList();
+                
                 if (userlist.Count > 0)
                 {
                     throw new Exception("User already exists");
                 }
                 context.Users.Add(user);
+                context.SaveChanges();
+            }
+        }
+        public static void DeleteUser(string name,string password)
+        {
+            User user = new User();
+            user.Name = name;
+            user.Password = password;
+            using (var context = new TweetContext())
+            {
+
+                List<User> userlist = context.Users.Where(b => b.Name.Equals(name)).ToList();
+
+                if (userlist.Count == 0)
+                {
+                    throw new Exception("Not found User");
+                }
+                context.Users.Remove(user);
                 context.SaveChanges();
             }
         }
