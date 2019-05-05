@@ -10,8 +10,7 @@ namespace DNWS
 {
     class TwitterApiPlugin : TwitterPlugin, IPlugin
     {
-        private string action;
-        private string method;
+        
         
         public List<User> GetUsers()
         {
@@ -91,12 +90,12 @@ namespace DNWS
             else if(url[0]=="Follow")
             {
                 Twitter twitter = new Twitter(user);
-                if(request.Method == "GET")
+                if(request.Method == "GET")//list following
                 {
                    string Json = JsonConvert.SerializeObject(GetFollowings(user));
                     response.body = Encoding.UTF8.GetBytes(Json);
                 }
-                else if(request.Method == "POST")
+                else if(request.Method == "POST")//add new following
                 {
                     try
                     {
@@ -104,11 +103,10 @@ namespace DNWS
                     }
                     catch (Exception)
                     {
-                        response.status = 404;
-                        response.body = Encoding.UTF8.GetBytes("404");
+                        sb.Append("<h1>Error</h1>");
                     }
                 }
-                else if (request.Method =="DELETE")
+                else if (request.Method =="DELETE")//delete following
                 {
                     try
                     {
@@ -116,7 +114,7 @@ namespace DNWS
                     }
                     catch (Exception)
                     {
-
+                        sb.Append("<h1>Error</h1>");
                     }
                 }
 
@@ -124,7 +122,7 @@ namespace DNWS
             else if (url[0] == "tweet")
             {
                 Twitter twitter = new Twitter(user);
-                if (request.Method == "GET")
+                if (request.Method == "GET")//get usr's and following's timeline
                 {
                     try
                     {
@@ -142,19 +140,19 @@ namespace DNWS
                     }
                     catch (Exception)
                     {
-
+                        sb.Append("<h1>Error</h1>");
                     }
                 }
-                else if(request.Method == "POST")
+                else if(request.Method == "POST")//add new tweet
                 {
                     try
                     {
                         twitter.PostTweet(message);
-                        response.body = Encoding.UTF8.GetBytes("200 OK");
+                        
                     }
                     catch (Exception)
                     {
-
+                        sb.Append("<h1>Error</h1>");
                     }
                 }
             }
